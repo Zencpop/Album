@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="theme-color" content="#142a46" />
+<meta name="description" content="Mavi bir kitabın içinde, bantlanmış fotoğraflarla kişisel hatıra albümün." />
+<title>Hatıra · Tipitip</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23223f68'/%3E%3Cpath d='M10 8h20v25H10zM14 8v25' fill='none' stroke='%23d9e7f5' stroke-width='2'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap" />
+<style>
+*{box-sizing:border-box}
+:root{--ink:#dce9f8;--muted:#90a8c4;--paper:#f6f3ea;--blue:#2c4e7a;--page-turn:520ms;--cover-turn:650ms;color-scheme:dark}
+html{overflow-x:hidden}
+body{margin:0;background:#142a46;color:var(--ink);font:14px "Manrope",sans-serif;min-height:100svh;background-image:radial-gradient(ellipse at 50% 42%,#385676 0,#203d5e 37%,#142a46 76%)}
+button,input{font:inherit}
+button{cursor:pointer;color:inherit}
+button:disabled{opacity:.3;cursor:default}
+button:focus-visible,input:focus-visible{outline:2px solid #b5d9ff;outline-offset:6px}
+header{height:84px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;position:relative;z-index:10}
+.brand{font:500 33px "Cormorant Garamond",Georgia,serif;letter-spacing:-1px;display:flex;align-items:center;gap:12px}
+.brand svg{width:27px;fill:none;stroke:#b7cee8;stroke-width:1.25}
+.brand small{margin-left:20px;padding-left:22px;border-left:1px solid #c6ddf226;font:10px Manrope,sans-serif;letter-spacing:3px;color:#7f9cbd}
+.top-actions{display:flex;align-items:center;gap:15px}
+.button{border:1px solid #accbea35;background:#accbea08;border-radius:7px;padding:11px 16px;display:inline-flex;gap:9px;align-items:center;transition:.2s}
+.button:hover{background:#accbea18;border-color:#accbea77}
+.button svg{width:17px;height:17px;stroke:currentColor;stroke-width:1.6;fill:none}
+.primary{background:#d7e7f6;color:#193657;border-color:#d7e7f6;font-weight:600}
+.primary:hover{background:#f2f7ff}
+.private{font-size:11px;color:#8ea8c4;letter-spacing:.3px}
+.private svg{width:11px;vertical-align:-2px;fill:none;stroke:currentColor;margin-right:5px}
+.intro{text-align:center;padding:5px 20px 0;pointer-events:none}
+.eyebrow{font-size:10px;letter-spacing:3.5px;color:#a7bfd9}
+.intro p{font:italic 19px "Cormorant Garamond",Georgia,serif;color:#8faac7;margin:10px 0 0}
+.stage{height:calc(100svh - 233px);height:calc(100dvh - 233px);min-height:520px;max-height:860px;display:grid;place-items:center;justify-items:center;align-items:center;perspective:2200px;padding:24px 40px 40px;overflow:hidden;position:relative}
+.book{width:min(100%,920px);height:min(100%,640px);aspect-ratio:1.48;position:relative;margin-inline:auto;min-width:0;justify-self:center;transform-style:preserve-3d;transform:rotateX(7deg);transition:transform var(--cover-turn) cubic-bezier(.25,.7,.25,1);touch-action:pan-y}
+.book.closed,.book.closing{transform:translateX(-25%) rotateX(7deg) rotateY(-7deg)}
+.book.open,.book.opening{transform:translateX(0) rotateX(7deg)}
+.spread{position:absolute;inset:0;display:flex;background:#213f69;border-radius:6px 10px 10px 6px;padding:7px;transform-style:flat;box-shadow:0 2px 0 #0d2545,0 4px 0 #dedacb,0 5px 0 #9eabae,0 7px 0 #e9e7dc,0 9px 0 #abb2ae,0 11px 0 #e5e4d9,0 14px 0 #23416a,0 16px 0 #0d2440}
+.closed .spread{visibility:hidden}
+.paper{width:50%;height:100%;position:relative;overflow:hidden;color:#526174;background:var(--paper);backface-visibility:hidden;container-type:size}
+.paper:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.45;background:repeating-linear-gradient(8deg,#aa9f8b06 0,#aa9f8b06 1px,transparent 1px,transparent 4px)}
+.paper.left{border-radius:2px 0 0 2px;background:linear-gradient(90deg,#f5f2e9 84%,#dfdacd 96%,#b6b4a9)}
+.paper.right{border-radius:0 2px 2px 0;background:linear-gradient(90deg,#c0beb2,#e7e2d8 5%,#f6f3ea 16%)}
+.paper .pagenum{position:absolute;bottom:2%;font:12px "Cormorant Garamond",Georgia,serif;color:#96978c;letter-spacing:2px;pointer-events:none}
+.left .pagenum{left:8%}
+.right .pagenum{right:8%}
+.paper .page-note{position:absolute;bottom:2%;left:50%;transform:translateX(-50%);font:italic 11px "Cormorant Garamond",Georgia,serif;color:#aba99e;white-space:nowrap;pointer-events:none}
+/* DÜZELTME: foto yüksekliği 36cqh -> 33cqh, konumlar %24 / %75; iki foto asla üst üste binmez */
+.photo{--r:1.3;--pw:14px;--ph:28px;--mw:66cqw;--iw:min(var(--mw),calc(33cqh*var(--r)));--x:47%;--y:24%;--rot:-3deg;position:absolute;z-index:2;left:var(--x);top:var(--y);width:calc(var(--iw) + var(--pw));height:calc(var(--iw)/var(--r) + var(--ph));background:#fffdf6;padding:calc(var(--pw)/2) calc(var(--pw)/2) calc(var(--ph) - var(--pw)/2);box-shadow:1px 3px 5px #18263a26,0 1px 1px #18263a1a;transform:translate(-50%,-50%) rotate(var(--rot));transition:transform .25s;isolation:isolate}
+.photo.pos1{--x:53%;--y:75%;--rot:3deg;z-index:3}
+.right .photo.pos0{--x:53%;--rot:3deg}
+.right .photo.pos1{--x:47%;--rot:-3deg}
+.photo:after{content:"";position:absolute;width:36%;height:21px;top:-10px;left:32%;transform:rotate(-5deg);z-index:3;opacity:.88;pointer-events:none;background:linear-gradient(90deg,#e3d6b995,#f0e4cac7 45%,#ded3b8a8);box-shadow:0 1px 2px #4d432011;clip-path:polygon(2% 0,98% 3%,96% 12%,100% 20%,97% 30%,100% 45%,97% 56%,100% 70%,97% 84%,99% 100%,0 96%,3% 87%,0 72%,3% 59%,0 45%,3% 32%,0 15%)}
+.photo.pos1:after{transform:rotate(8deg);left:36%}
+.photo img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.92);user-select:none}
+.photo .caption{position:absolute;bottom:3px;left:26px;right:26px;font:italic 14px "Cormorant Garamond",Georgia,serif;text-align:center;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;color:#5d6266;pointer-events:none}
+.photo .remove{position:absolute;right:3px;top:3px;width:30px;height:30px;padding:0;border-radius:50%;border:0;background:#233f61d9;color:#fff;font-size:19px;line-height:1;display:grid;place-items:center;z-index:30;opacity:.85;transition:opacity .2s;pointer-events:auto}
+.photo:hover .remove,.photo:focus-within .remove{opacity:1}
+@media (hover:none){.photo .remove{opacity:1}}
+.photo:hover{z-index:5;transform:translate(-50%,-50%) rotate(0) scale(1.03)}
+.photo.empty{border:1px dashed #8995a444;background:#e9ebea66;box-shadow:none;display:flex;flex-direction:column;gap:5px;align-items:center;justify-content:center;cursor:pointer;color:#8b97a6;padding:8px}
+.photo.empty:after{opacity:.55}
+.photo.empty span{font:27px "Cormorant Garamond",Georgia,serif;font-weight:400}
+.photo.empty small{font-size:10px}
+.photo.empty:hover{border-color:#5c7eaa;color:#4e7098;background:#e3e9f0}
+.cover{position:absolute;top:0;bottom:0;left:50%;width:50%;transform-origin:left center;transform-style:preserve-3d;z-index:8;border-radius:0 7px 7px 0;cursor:pointer;outline:none}
+.cover-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:0 7px 7px 0}
+.cover-front{display:flex;flex-direction:column;align-items:center;justify-content:center;color:#c9d9e9;background-color:#294975;background-image:repeating-linear-gradient(0deg,#ffffff03 0,transparent 1px,transparent 3px),linear-gradient(90deg,#071d3699,transparent 4%,#ffffff08 96%,#0003);box-shadow:inset 0 0 0 1px #aec7df25,inset 5px 0 8px #0b213877,5px 3px 0 #173456,6px 7px 0 #e0dfd3,8px 10px 0 #203e67,9px 13px 0 #112943}
+.cover-front:before{content:"";position:absolute;inset:25px;border:1px solid #afc8e14d;box-shadow:inset 0 0 0 5px #23426b,inset 0 0 0 6px #afc8e11a;pointer-events:none}
+.cover-back .paper{width:100%;backface-visibility:visible}
+.cover-back{transform:rotateY(180deg);background:linear-gradient(90deg,#edeae0 82%,#d3d1c5);border:7px solid #213f69;border-left:0}
+.cover-label{font-size:10px;letter-spacing:4px;color:#a3bbd5;position:relative}
+.cover-title{font:500 clamp(35px,4.3vw,64px)/1.03 "Cormorant Garamond",Georgia,serif;text-align:center;margin:42px 35px 22px;text-shadow:0 -1px 0 #0b213abb,0 1px 0 #ffffff20;overflow-wrap:anywhere;max-width:82%}
+.cover-line{width:45px;height:1px;background:#afc9e270;margin:20px 0}
+.cover-subtitle{font:italic 18px "Cormorant Garamond",Georgia,serif;color:#a7bfd8}
+.cover-year{font-size:11px;letter-spacing:6px;color:#99b4d0;margin-top:44px}
+.cover-bottom{position:absolute;bottom:46px;font-size:9px;letter-spacing:3px;color:#7294b9}
+.open .cover{display:none}
+.opening .cover{animation:openCover var(--cover-turn) cubic-bezier(.2,.65,.2,1) both}
+.closing .cover{animation:closeCover var(--cover-turn) cubic-bezier(.2,.65,.2,1) both}
+@keyframes openCover{from{transform:rotateY(0) translateZ(0)}to{transform:rotateY(-180deg) translateZ(-1px)}}
+@keyframes closeCover{from{transform:rotateY(-180deg) translateZ(-1px)}to{transform:rotateY(0) translateZ(0)}}
+.opening #leftPage{visibility:hidden}
+.opening .spread{animation:spreadIn var(--cover-turn) both}
+.closing #leftPage{animation:leftOut var(--cover-turn) both}
+@keyframes spreadIn{0%{opacity:0}45%,100%{opacity:1}}
+@keyframes leftOut{0%,35%{opacity:1}100%{opacity:0}}
+.flipper{position:absolute;top:7px;bottom:7px;left:50%;width:calc(50% - 7px);transform-origin:left;transform-style:preserve-3d;z-index:7;pointer-events:none}
+.flipper .paper{position:absolute;inset:0;width:100%;height:100%;backface-visibility:hidden}
+.flipper .back{transform:rotateY(180deg)}
+.flipper.forward{animation:turnForward var(--page-turn) cubic-bezier(.2,.6,.2,1) both}
+.flipper.backward{animation:turnBackward var(--page-turn) cubic-bezier(.2,.6,.2,1) both}
+.flipper .paper:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#1520333b,transparent 50%);pointer-events:none;animation:shade var(--page-turn) ease-in-out}
+@keyframes turnForward{from{transform:rotateY(0)}to{transform:rotateY(-180deg)}}
+@keyframes turnBackward{from{transform:rotateY(-180deg)}to{transform:rotateY(0)}}
+@keyframes shade{0%,100%{opacity:0}50%{opacity:1}}
+.controls{display:flex;justify-content:center;align-items:center;gap:22px;margin:0 16px;position:relative;z-index:9}
+.round{width:42px;height:42px;border-radius:50%;border:1px solid #a5c0dd3b;background:#b5d9ff05;font:25px "Cormorant Garamond",Georgia,serif;display:grid;place-items:center}
+.round:hover:enabled{background:#b5d9ff19}
+.counter{font-size:11px;letter-spacing:3px;min-width:155px;text-align:center;color:#b5cbe3}
+.hint{text-align:center;font-size:11px;color:#7997b8;margin:13px 15px 0}
+.bottom{display:flex;align-items:center;justify-content:space-between;padding:24px 40px 20px;gap:15px;font-size:10px;color:#7794b2}
+.bottom .count{letter-spacing:1.5px}
+.save{border:0;background:none;color:#90a9c4;font-size:11px;padding:5px;display:flex;align-items:center;gap:6px}
+.save.failed{color:#f2c9aa}
+.rename{border:0;border-bottom:1px solid #a5c0dd40;background:transparent;padding:4px 0;color:#8ba8c8;font-size:11px}
+.toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,20px);background:#e1edf8;color:#203c5c;box-shadow:0 12px 40px #061d3a88;padding:14px 22px;border-radius:8px;z-index:50;opacity:0;transition:.3s;pointer-events:none;max-width:90vw;text-align:center;line-height:1.6}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.loading{position:absolute;inset:0;z-index:20;display:grid;place-items:center;color:#c9def1;background:#172e48d9}
+.hidden{display:none!important}
+body.dragging .stage:after{content:"Fotoğraflarını albüme bırak";position:absolute;inset:25px;border:2px dashed #b5d9ff;background:#204564dd;border-radius:20px;z-index:25;display:grid;place-items:center;font:35px "Cormorant Garamond",Georgia,serif;pointer-events:none}
+dialog{background:#203c5c;color:#e0ebf5;border:1px solid #8eb1d755;border-radius:12px;width:min(420px,90vw);padding:28px;box-shadow:0 30px 70px #001029aa}
+dialog::backdrop{background:#071a3099;backdrop-filter:blur(4px)}
+dialog h2{font:32px "Cormorant Garamond",Georgia,serif;margin:0 0 22px}
+dialog label{font-size:12px;color:#a9c0d8;display:block;margin-bottom:8px}
+dialog input{width:100%;border:1px solid #789abc66;background:#142c48;color:#fff;border-radius:6px;padding:12px}
+dialog p{margin:0;color:#a9c0d8;line-height:1.6}
+.tools{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+dialog .dialog-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:24px}
+@media (min-width:1500px){.book{width:min(100%,1050px);height:min(100%,710px)}.stage{max-height:930px}}
+@media (max-width:760px){
+header{padding:0 20px;height:76px}
+.brand{font-size:29px}
+.brand small,.private{display:none}
+.intro{padding-top:14px}
+.stage{min-height:480px;height:calc(100svh - 245px);height:calc(100dvh - 245px);padding:30px 19px 36px}
+.book{height:min(100%,540px)}
+.cover-title{font-size:40px;margin:30px 25px 15px}
+.cover-label{font-size:8px;letter-spacing:2px}
+.cover-front:before{inset:17px}
+.cover-subtitle{font-size:15px}
+.cover-year{margin-top:30px;font-size:9px}
+.cover-bottom{bottom:30px;font-size:8px;letter-spacing:1.5px}
+.photo{--pw:10px;--ph:23px;--mw:80cqw}
+.book.closed,.book.closing{transform:translateX(-25%) rotateX(7deg)}
+.book.open,.book.opening{transform:translateX(0) rotateX(7deg)}
+.photo .caption{font-size:11px}
+.photo:after{height:17px;top:-8px}
+.photo.empty small{font-size:9px}
+.bottom{padding:22px 20px;font-size:9px}
+.counter{font-size:10px;min-width:125px}
+.photo .remove{width:30px;height:30px;font-size:17px}
+.paper .page-note{display:none}
+}
+@media (max-width:480px){
+header{padding:0 16px}
+.primary{padding:10px 13px;font-size:12px}
+.intro .eyebrow{font-size:9px;letter-spacing:2.5px}
+.intro p{font-size:16px}
+.stage{min-height:430px;padding:32px 12px 40px}
+.book{height:100%;max-height:500px}
+.cover-title{font-size:33px;margin:26px 19px 16px}
+.cover-label{font-size:7px;letter-spacing:1.5px}
+.cover-subtitle{font-size:13px}
+.cover-front:before{inset:12px}
+.cover-year{margin-top:25px}
+.cover-bottom{bottom:23px;font-size:7px}
+.cover-line{width:30px;margin:13px 0}
+.photo{--pw:8px;--ph:19px}
+.photo .caption{font-size:10px;bottom:2px}
+.photo.empty small{font-size:8px}
+.photo.empty span{font-size:21px}
+.bottom{flex-wrap:wrap;justify-content:center;column-gap:24px;padding:20px 16px}
+.hint{font-size:10px}
+.round{width:38px;height:38px}
+.paper .pagenum{font-size:10px}
+.spread{padding:5px}
+.flipper{top:5px;bottom:5px;width:calc(50% - 5px)}
+}
+/* ===== Mavi kalp teması ===== */
+.hrt{--heart:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");display:inline-block;width:1em;height:1em;background:currentColor;-webkit-mask:var(--heart) center/contain no-repeat;mask:var(--heart) center/contain no-repeat;vertical-align:-.12em}
+.brand-heart{font-size:19px;color:#7fb4ec;margin-left:-6px;filter:drop-shadow(0 0 6px #6fa8e655)}
+.eyebrow .hrt{color:#7fb4ec;margin-left:4px}
+.cover-divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:#8fc0f0;font-size:21px}
+.cover-divider .cover-line{margin:0;width:38px}
+.cover-divider .hrt{filter:drop-shadow(0 0 8px #6fa8e688);animation:beat 2.6s ease-in-out infinite}
+.cover-bottom .hrt{color:#8fc0f0;margin-left:3px}
+.paper .page-note .hrt{color:#7aa7d8}
+.photo .love{position:absolute;left:9px;bottom:5px;width:14px;height:14px;color:#5b92d6;pointer-events:none}
+@keyframes beat{0%,100%{transform:scale(1)}14%{transform:scale(1.2)}28%{transform:scale(1)}42%{transform:scale(1.13)}70%{transform:scale(1)}}
+.floaters{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.floaters .hrt{position:absolute;left:var(--l);bottom:-40px;width:var(--s);height:var(--s);color:#8fc0f0;opacity:0;animation:floatUp var(--d) linear var(--dl) infinite}
+@keyframes floatUp{0%{transform:translate(0,0) rotate(-8deg);opacity:0}10%{opacity:.22}50%{transform:translate(18px,-55vh) rotate(8deg)}90%{opacity:.16}100%{transform:translate(-12px,-115vh) rotate(-6deg);opacity:0}}
+.burst{position:absolute;left:50%;top:50%;width:0;height:0;z-index:30;pointer-events:none}
+.burst .hrt{position:absolute;width:var(--s);height:var(--s);margin:-12px;color:#9ccaf5;filter:drop-shadow(0 0 6px #6fa8e6aa);animation:burstOut 1.6s ease-out .25s both}
+@keyframes burstOut{0%{transform:translate(0,0) scale(.3);opacity:0}15%{opacity:.95}100%{transform:translate(var(--dx),var(--dy)) scale(1);opacity:0}}
+@media (max-width:480px){.cover-divider{margin:13px 0;font-size:17px;gap:9px}.cover-divider .cover-line{width:26px}.brand-heart{font-size:16px}}
+@media (prefers-reduced-motion:reduce){.floaters{display:none}.cover-divider .hrt,.burst .hrt{animation:none}}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+.flipper,.book.opening,.book.closing,.opening .cover,.closing .cover{will-change:transform}
+</style>
+</head>
+<body>
+<header>
+<div class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 5h9c2 0 3 1 3 3 0-2 1-3 3-3h9v22h-9c-2 0-3 1-3 2 0-1-1-2-3-2H4zM16 8v21"/></svg>Hatıra Defteri</span><small></small></div>
+<div class="top-actions"><span class="private"><svg viewBox="0 0 16 16"><rect x="4" y="7" width="8" height="7" rx="1"/><path d="M5 7V4a3 3 0 016 0v3"/></svg>Sana özel</span><button class="button primary" id="uploadBtn"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Fotoğraf ekle</button></div>
+</header>
+<main>
+<div class="intro"><div class="eyebrow">AŞKIMA ÖZEL FOTO ALBÜMÜ</span></div><p id="introText">En Mutlu Olduğum Bir Senem.</p></div>
+<div class="stage" id="stage">
+<div class="book closed" id="book" role="group" aria-label="Üç boyutlu fotoğraf kitabı">
+<div class="spread"><div class="paper left" id="leftPage"></div><div class="paper right" id="rightPage"></div></div>
+<div class="cover" id="cover" role="button" tabindex="0" aria-label="Kitabın kapağını aç">
+<div class="cover-face cover-front"><div class="cover-label">FOTOĞRAF ALBÜMÜ</div><div class="cover-title" id="coverTitle">ESİLA ve EGEMEN</div><div class="cover-divider"><span class="cover-line"></span><span class="hrt"></span><span class="cover-line"></span></div><div class="cover-subtitle">Aç Aç Çekinme</div><div class="cover-year">2025-2026</div><div class="cover-bottom">UPUZUUUN BİRR SENE <span class="hrt"></span></div></div>
+<div class="cover-face cover-back"><div class="paper left" id="coverBack"></div></div>
+</div>
+</div>
+<div id="loading" class="loading">Hatıraların hazırlanıyor…</div>
+</div>
+<div class="controls">
+<button id="prev" class="round" aria-label="Önceki sayfa veya kapağı kapat">‹</button>
+<div id="counter" class="counter">KAPAĞI AÇ</div>
+<button id="next" class="round" aria-label="Kapağı aç veya sonraki sayfa">›</button>
+</div>
+<p id="hint" class="hint">Başlamak için kitabın kapağına dokun.</p>
+</main>
+<footer class="bottom"><span class="count" id="count">0 FOTOĞRAF · 0 SAYFA</span><button class="save" id="saveState" aria-live="polite">Albüm yükleniyor…</button><span class="tools"><button class="rename" id="backupBtn">Yedekle</button><button class="rename" id="restoreBtn">Geri yükle</button><button class="rename" id="renameBtn">Kitabın adını değiştir</button></span></footer>
+<dialog id="titleDialog"><form id="titleForm"><h2>Kitabının adı</h2><label for="titleInput">Kapakta ne yazsın?</label><input id="titleInput" type="text" maxlength="60" required /><div class="dialog-actions"><button type="button" class="button" id="cancelTitle">Vazgeç</button><button type="submit" class="button primary">Kaydet</button></div></form></dialog>
+<dialog id="confirmDialog"><form method="dialog"><h2>Fotoğraf çıkarılsın mı?</h2><p>Bu fotoğraf kitaptan silinecek, yeri boş kalacak.</p><div class="dialog-actions"><button value="no" class="button">Vazgeç</button><button value="yes" class="button primary">Çıkar</button></div></form></dialog>
+<input id="restoreFile" class="hidden" type="file" accept="application/json,.json" />
+<input id="files" class="hidden" type="file" accept="image/jpeg,image/png,image/webp" multiple />
+<div id="toast" class="toast" role="status"></div>
+<script>
+const $=s=>document.querySelector(s);
+let album={title:"Esila ve Egemen",color:"#30475e",photos:[]},spread=-1,busy=false,ready=false,uploading=false,dirty=false,queue=Promise.resolve(),toastTimer,mode="server";
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const raf=()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+// Animasyon bitişini bekler; takılırsa 1.5 sn sonra yine de devam eder.
+async function finishMotion(el){await Promise.race([Promise.allSettled(el.getAnimations().map(a=>a.finished)),wait(1500)])}
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
+function setHtml(el,h){if(el._h!==h){el._h=h;el.innerHTML=h}}
+function toast(s){$("#toast").textContent=s;$("#toast").classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>$("#toast").classList.remove("show"),5000)}
+function state(s,failed=false){$("#saveState").textContent=s;$("#saveState").classList.toggle("failed",failed)}
+async function api(url,o={}){
+  const c=new AbortController(),t=setTimeout(()=>c.abort(),o.timeout||8000);
+  try{
+    const r=await fetch(url,{...o,signal:c.signal});
+    if(!r.ok){let m="İşlem tamamlanamadı.";try{m=(await r.json()).error||m}catch{}throw Error(m)}
+    return await r.json();
+  }finally{clearTimeout(t)}
+}
+// Sunucu yoksa albüm bu cihazda (IndexedDB) saklanır.
+let dbp;
+const db=()=>dbp||(dbp=new Promise((res,rej)=>{const r=indexedDB.open("hatira",1);r.onupgradeneeded=()=>r.result.createObjectStore("kv");r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}));
+async function kv(op,key,val){
+  const d=await db();
+  return new Promise((res,rej)=>{
+    const s=d.transaction("kv",op==="get"?"readonly":"readwrite").objectStore("kv");
+    const q=op==="get"?s.get(key):op==="put"?s.put(val,key):s.delete(key);
+    q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error);
+  });
+}
+// Fotoğraflar bellekte blob URL olarak tutulur: sayfa çevirirken tekrar ağdan indirilmez.
+const urls=new Map(),dims=new Map();
+const ratio=p=>{const d=dims.get(p.id),w=(d&&d[0])||p.w,h=(d&&d[1])||p.h;return w&&h?Math.min(2,Math.max(.55,w/h)):1.33};
+function setShift(){const b=$("#book");b.style.setProperty("--cx",(-b.offsetWidth/4)+"px")}
+async function photoSrc(p){
+  if(urls.has(p.id))return urls.get(p.id);
+  let blob;
+  if(mode==="local")blob=await kv("get","p:"+p.id);
+  else{const r=await fetch("/api/photos/"+encodeURIComponent(p.id));if(!r.ok)throw Error("Fotoğraf alınamadı.");blob=await r.blob()}
+  if(!blob)throw Error("Fotoğraf bulunamadı.");
+  const u=URL.createObjectURL(blob);urls.set(p.id,u);return u;
+}
+const photoUrl=p=>urls.get(p.id)||(mode==="server"?"/api/photos/"+encodeURIComponent(p.id):"");
+async function prep(list){
+  await Promise.race([Promise.all(list.map(async p=>{try{const i=new Image();i.src=await photoSrc(p);await i.decode();dims.set(p.id,[i.naturalWidth,i.naturalHeight])}catch{}})),wait(3000)]);
+}
+const lastSpread=()=>Math.max(0,Math.ceil(album.photos.length/4)-1);
+const spreadPhotos=s=>album.photos.slice(Math.max(0,s)*4,Math.max(0,s)*4+4).filter(Boolean);
+// İlk boş yuva (silinen foto boşluğu ya da sonu).
+const firstEmpty=()=>{const k=album.photos.findIndex(p=>!p);return k<0?album.photos.length:k};
+async function warmAll(){for(let s=Math.max(0,spread);s<=lastSpread();s++)await prep(spreadPhotos(s));for(let s=0;s<Math.max(0,spread);s++)await prep(spreadPhotos(s));if(!busy&&!uploading)render()}
+function pageContent(page){
+  let result="";
+  for(let n=0;n<2;n++){
+    const i=page*2+n,p=album.photos[i];
+    if(p){
+      result+='<div class="photo pos'+n+'" style="--r:'+ratio(p).toFixed(3)+'"><img src="'+photoUrl(p)+'" alt="'+esc(p.name)+'" draggable="false"><span class="hrt love"></span><span class="caption">'+esc(p.name.replace(/\.[^.]+$/,""))+'</span><button class="remove" data-remove="'+i+'" aria-label="'+esc(p.name)+' fotoğrafını albümden çıkar">×</button></div>';
+    }else{
+      result+='<button class="photo empty pos'+n+'" data-add="true" aria-label="Fotoğraf ekle; ilk boş yere yerleşir"><span>+</span><small>'+(i===firstEmpty()?"Bir hatıra ekle":"Bir sonraki hatıra")+"</small></button>";
+    }
+  }
+  return result+'<span class="pagenum">'+String(page+1).padStart(2,"0")+'</span><span class="page-note">çok seviyorum seni <span class="hrt"></span></span>';
+}
+function controls(){
+  $("#prev").disabled=spread<0||busy;
+  $("#next").disabled=busy||(spread>=lastSpread()&&spread>=0);
+  $("#counter").textContent=spread<0?"KAPAĞI AÇ":String(spread*2+1).padStart(2,"0")+" — "+String(spread*2+2).padStart(2,"0");
+  $("#hint").textContent=spread<0?"Başlamak için kitabın kapağına dokun.":"Sayfaları oklarla veya yana kaydırarak çevir.";
+  $("#introText").textContent=spread<0?"Bir sonraki seneler için beklemede kalın.":"Ulan ne güzel çıkmışsın aşkım";
+}
+function renderBook(){
+  spread=Math.min(spread,lastSpread());
+  $("#book").className="book "+(spread<0?"closed":"open");
+  setHtml($("#leftPage"),pageContent(Math.max(0,spread*2)));
+  setHtml($("#rightPage"),pageContent(Math.max(0,spread*2+1)));
+  controls();
+}
+function render(){
+  setShift();
+  $("#coverTitle").textContent=album.title;
+  $("#count").textContent=album.photos.filter(Boolean).length+" FOTOĞRAF · "+Math.ceil(album.photos.length/2)+" SAYFA";
+  if(!busy)renderBook();
+}
+async function coverTurn(open){
+  if(busy)return;
+  busy=true;controls();
+  if(open)await prep(spreadPhotos(0));
+  setHtml($("#coverBack"),pageContent(0));
+  setHtml($("#leftPage"),pageContent(0));
+  setHtml($("#rightPage"),pageContent(1));
+  $("#book").className="book "+(open?"opening":"closing");
+  if(open)loveBurst();
+  await finishMotion($("#cover"));
+  spread=open?0:-1;busy=false;renderBook();
+}
+async function turn(dir){
+  if(busy)return;
+  if(spread<0){if(dir>0)await coverTurn(true);return}
+  if(spread===0&&dir<0){await coverTurn(false);return}
+  const target=spread+dir;
+  if(target<0||target>lastSpread())return;
+  busy=true;controls();
+  // Yeni sayfadaki fotoğraflar hazır olmadan çevirmeye başlama (eski sayfa takılı kalmasın).
+  await prep(spreadPhotos(target));
+  const leaf=document.createElement("div");
+  leaf.className="flipper "+(dir>0?"forward":"backward");
+  leaf.innerHTML='<div class="paper right">'+pageContent(dir>0?spread*2+1:target*2+1)+'</div><div class="paper left back">'+pageContent(dir>0?target*2:spread*2)+"</div>";
+  $("#book").append(leaf);
+  if(dir>0)setHtml($("#rightPage"),pageContent(target*2+1));
+  else setHtml($("#leftPage"),pageContent(target*2));
+  await finishMotion(leaf);
+  // Yaprak hâlâ üstteyken alttaki sayfayı hazırla, sonra yaprağı kaldır: titreme olmaz.
+  if(dir>0)setHtml($("#leftPage"),pageContent(target*2));
+  else setHtml($("#rightPage"),pageContent(target*2+1));
+  await raf();
+  leaf.remove();
+  spread=target;busy=false;renderBook();
+}
+async function persist(){
+  if(!ready)return false;
+  dirty=true;
+  const snapshot=JSON.stringify(album);
+  state("Kaydediliyor…");
+  let success=false;
+  queue=queue.catch(()=>{}).then(async()=>{
+    try{
+      if(mode==="server")await api("/api/album",{method:"PUT",headers:{"Content-Type":"application/json"},body:snapshot});
+      else await kv("put","album",JSON.parse(snapshot));
+      success=true;
+      if(JSON.stringify(album)===snapshot){dirty=false;state(mode==="local"?"✓ Bu cihazda kaydedildi":"✓ Hatıraların kaydedildi")}
+    }catch(e){state("Kaydedilemedi · yeniden dene",true);toast(e.message)}
+  });
+  await queue;
+  return success;
+}
+async function load(){
+  ready=false;
+  $("#loading").classList.remove("hidden");
+  try{
+    try{album=await api("/api/album",{timeout:5000});mode="server"}
+    catch{mode="local";const a=await kv("get","album");if(a)album=a}
+    album.photos=(album.photos||[]).map(p=>p||null);while(album.photos.length&&!album.photos[album.photos.length-1])album.photos.pop();
+    ready=true;
+    if(mode==="local"&&navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{});
+    await prep(spreadPhotos(0));
+    render();
+    state(mode==="local"?"✓ Hatıraların bu cihazda saklanıyor":"✓ Hatıraların güvende");
+    warmAll();
+  }catch(e){
+    state("Albüm yüklenemedi · yeniden dene",true);
+    toast(e.message);
+  }finally{$("#loading").classList.add("hidden")}
+}
+async function compress(file){
+  const bitmap=await createImageBitmap(file);
+  const s=Math.min(1,2200/Math.max(bitmap.width,bitmap.height));
+  const canvas=document.createElement("canvas");
+  canvas.width=Math.round(bitmap.width*s);canvas.height=Math.round(bitmap.height*s);
+  const ctx=canvas.getContext("2d");
+  ctx.fillStyle="#fff";ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);
+  bitmap.close();
+  return new Promise((resolve,reject)=>canvas.toBlob(b=>b?(b.w=canvas.width,b.h=canvas.height,resolve(b)):reject(Error("Fotoğraf işlenemedi.")),"image/jpeg",0.92));
+}
+async function upload(files){
+  if(!ready){toast("Önce albümün yüklenmesini bekle.");return}
+  if(uploading||busy){toast("Devam eden işlemin bitmesini bekle.");return}
+  const list=Array.from(files);
+  if(!list.length)return;
+  if(list.length+album.photos.filter(Boolean).length>60){toast("Kitabına en fazla 60 fotoğraf ekleyebilirsin.");return}
+  uploading=true;$("#uploadBtn").disabled=true;
+  let start=Infinity;
+  let added=0;
+  for(let i=0;i<list.length;i++){
+    const file=list[i];
+    if(!["image/jpeg","image/png","image/webp"].includes(file.type)||file.size>15*1024*1024){
+      toast(file.name+": JPG, PNG veya WEBP; en fazla 15 MB olmalı.");continue;
+    }
+    state("Fotoğraf ekleniyor · "+(i+1)+" / "+list.length);
+    try{
+      const blob=await compress(file);
+      let p;
+      if(mode==="server"){
+        p=await api("/api/photos",{method:"POST",headers:{"Content-Type":"image/jpeg","X-Photo-Name":encodeURIComponent(file.name.slice(0,120))},body:blob,timeout:60000});
+      }else{
+        p={id:(crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random().toString(36).slice(2)),name:file.name.slice(0,120)};
+        await kv("put","p:"+p.id,blob);
+      }
+      p.w=blob.w;p.h=blob.h;dims.set(p.id,[blob.w,blob.h]);
+      urls.set(p.id,URL.createObjectURL(blob));
+      const slot=firstEmpty();if(slot>=album.photos.length)album.photos.push(p);else album.photos[slot]=p;start=Math.min(start,slot);added++;
+      await persist();render();
+    }catch(e){toast(file.name+": "+e.message)}
+  }
+  uploading=false;$("#uploadBtn").disabled=false;$("#files").value="";
+  if(added){
+    if(spread<0)await coverTurn(true);
+    spread=Math.floor(start/4);render();
+    toast(added+" fotoğraf sırayla sayfalara yerleşti 💙");
+  }
+  if(!dirty)state(mode==="local"?"✓ Bu cihazda kaydedildi":"✓ Hatıraların kaydedildi");
+}
+const blobToData=b=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(r.error);r.readAsDataURL(b)});
+async function backup(){
+  if(!ready||busy||uploading)return;
+  if(!album.photos.some(Boolean)){toast("Yedeklenecek fotoğraf yok.");return}
+  state("Yedek hazırlanıyor…");
+  try{
+    const out={app:"hatira",v:1,title:album.title,photos:[]};
+    for(const p of album.photos){
+      if(!p){out.photos.push(null);continue}
+      const blob=await (await fetch(await photoSrc(p))).blob();
+      out.photos.push({name:p.name,w:p.w,h:p.h,data:await blobToData(blob)});
+    }
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(new Blob([JSON.stringify(out)],{type:"application/json"}));
+    a.download="hatira-yedek-"+new Date().toISOString().slice(0,10)+".json";
+    document.body.append(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href),10000);
+    state("✓ Yedek indirildi");
+  }catch(e){state("Yedek alınamadı",true);toast(e.message)}
+}
+// Geri yükleme mevcut fotoğrafları silmez; yedekteki fotoğrafları boş yerlere ekler.
+async function restore(file){
+  if(!file||!ready||busy||uploading)return;
+  uploading=true;
+  try{
+    const data=JSON.parse(await file.text());
+    if(data.app!=="hatira"||!Array.isArray(data.photos))throw Error("Bu bir Hatıra yedeği değil.");
+    const incoming=data.photos.filter(Boolean);
+    if(incoming.length+album.photos.filter(Boolean).length>60)throw Error("Toplam 60 fotoğrafı aşıyor.");
+    let n=0;
+    for(const it of incoming){
+      state("Geri yükleniyor · "+(++n)+" / "+incoming.length);
+      const blob=await (await fetch(it.data)).blob();
+      let p;
+      if(mode==="server")p=await api("/api/photos",{method:"POST",headers:{"Content-Type":"image/jpeg","X-Photo-Name":encodeURIComponent(it.name||"foto")},body:blob,timeout:60000});
+      else{p={id:crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random().toString(36).slice(2),name:it.name||"foto"};await kv("put","p:"+p.id,blob)}
+      p.w=it.w;p.h=it.h;if(it.w&&it.h)dims.set(p.id,[it.w,it.h]);
+      urls.set(p.id,URL.createObjectURL(blob));
+      const slot=firstEmpty();if(slot>=album.photos.length)album.photos.push(p);else album.photos[slot]=p;
+      await persist();
+    }
+    if(album.title==="Esila ve Egemen"&&data.title)album.title=data.title;
+    render();await persist();
+    toast(incoming.length+" fotoğraf geri yüklendi.");
+  }catch(e){state("Geri yükleme başarısız",true);toast(e.message)}
+  finally{uploading=false;$("#restoreFile").value=""}
+}
+$("#backupBtn").onclick=backup;
+$("#restoreBtn").onclick=()=>$("#restoreFile").click();
+$("#restoreFile").onchange=e=>restore(e.target.files[0]);
+$("#uploadBtn").onclick=()=>$("#files").click();
+$("#files").onchange=e=>upload(e.target.files);
+$("#prev").onclick=()=>turn(-1);
+$("#next").onclick=()=>turn(1);
+$("#cover").onclick=()=>turn(1);
+$("#cover").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();turn(1)}};
+async function removePhoto(i){
+  if(busy||uploading)return;
+  const gone=album.photos[i];
+  if(!gone)return;
+  const ok=await new Promise(res=>{const d=$("#confirmDialog");d.returnValue="";d.onclose=()=>res(d.returnValue==="yes");d.showModal()});
+  if(!ok||album.photos[i]!==gone)return;
+  album.photos[i]=null;while(album.photos.length&&!album.photos[album.photos.length-1])album.photos.pop();
+  if(gone&&mode==="local"){kv("delete","p:"+gone.id).catch(()=>{});if(urls.has(gone.id)){URL.revokeObjectURL(urls.get(gone.id));urls.delete(gone.id)}}
+  render();await persist();
+}
+// Tarayıcı 3B dönüşte dokunmayı yanlış öğeye verirse bile, dokunma koordinatına göre
+// düğmeyi kendimiz buluruz (getBoundingClientRect dönüşümleri hesaba katar).
+function hitByRect(x,y){
+  const book=$("#book");
+  if(!book.classList.contains("open"))return null;
+  const slop=6;
+  for(const sel of ["[data-remove]","[data-add]"]){
+    for(const el of book.querySelectorAll("#leftPage "+sel+", #rightPage "+sel)){
+      const r=el.getBoundingClientRect();
+      if(x>=r.left-slop&&x<=r.right+slop&&y>=r.top-slop&&y<=r.bottom+slop)return el;
+    }
+  }
+  return null;
+}
+document.addEventListener("click",e=>{
+  if($("#titleDialog").open||$("#confirmDialog").open)return;
+  const t0=e.target.closest?e.target:e.target.parentElement;
+  let t=t0&&t0.closest("#book [data-remove], #book [data-add]");
+  if(!t){
+    const inter=t0&&t0.closest("button,input,dialog,a,label");
+    if(inter&&(!inter.closest("#book")||inter.closest(".cover")))return;
+    t=hitByRect(e.clientX,e.clientY);
+  }
+  if(!t)return;
+  e.preventDefault();e.stopPropagation();
+  if(t.hasAttribute("data-remove"))removePhoto(Number(t.dataset.remove));
+  else $("#files").click();
+},true);
+$("#renameBtn").onclick=()=>{if(!ready)return;$("#titleInput").value=album.title;$("#titleDialog").showModal()};
+$("#cancelTitle").onclick=()=>$("#titleDialog").close();
+$("#titleForm").onsubmit=e=>{
+  e.preventDefault();
+  const value=$("#titleInput").value.trim();
+  if(!value)return;
+  album.title=value;render();$("#titleDialog").close();persist();
+};
+$("#saveState").onclick=()=>{if(!ready)load();else if(dirty)persist()};
+window.addEventListener("keydown",e=>{
+  if(/INPUT|TEXTAREA/.test(e.target.tagName)||$("#titleDialog").open||$("#confirmDialog").open)return;
+  if(e.key==="ArrowRight"){e.preventDefault();turn(1)}
+  if(e.key==="ArrowLeft"){e.preventDefault();turn(-1)}
+  if(e.key==="Escape"&&spread>=0&&!busy)coverTurn(false);
+});
+let touchX=0;
+$("#book").addEventListener("touchstart",e=>(touchX=e.changedTouches[0].clientX),{passive:true});
+$("#book").addEventListener("touchend",e=>{const d=e.changedTouches[0].clientX-touchX;if(Math.abs(d)>45)turn(d<0?1:-1)},{passive:true});
+let drag=0;
+window.addEventListener("dragenter",e=>{if(Array.from(e.dataTransfer.types).includes("Files")){e.preventDefault();drag++;document.body.classList.add("dragging")}});
+window.addEventListener("dragover",e=>e.preventDefault());
+window.addEventListener("dragleave",e=>{e.preventDefault();if(--drag<=0){drag=0;document.body.classList.remove("dragging")}});
+window.addEventListener("drop",e=>{e.preventDefault();drag=0;document.body.classList.remove("dragging");upload(e.dataTransfer.files)});
+window.addEventListener("resize",setShift);
+window.addEventListener("orientationchange",()=>setTimeout(setShift,200));
+window.addEventListener("beforeunload",e=>{if(dirty||uploading){e.preventDefault();e.returnValue=""}});
+// Kapak açılırken mavi kalpler saçılır.
+function loveBurst(){
+  const b=document.createElement("div");b.className="burst";b.setAttribute("aria-hidden","true");
+  for(let i=0;i<14;i++){
+    const h=document.createElement("i"),a=Math.random()*Math.PI*2,d=90+Math.random()*170;
+    h.className="hrt";
+    h.style.cssText="--s:"+(14+Math.random()*16).toFixed(0)+"px;--dx:"+(Math.cos(a)*d).toFixed(0)+"px;--dy:"+(Math.sin(a)*d-40).toFixed(0)+"px;animation-delay:"+(.25+Math.random()*.3).toFixed(2)+"s";
+    b.append(h);
+  }
+  $("#stage").append(b);
+  setTimeout(()=>b.remove(),2600);
+}
+// Arka planda yavaşça yükselen soluk kalpler.
+(function(){
+  const f=document.createElement("div");f.className="floaters";f.setAttribute("aria-hidden","true");
+  for(let i=0;i<14;i++){
+    const h=document.createElement("i");h.className="hrt";
+    h.style.cssText="--l:"+(Math.random()*96).toFixed(1)+"%;--s:"+(10+Math.random()*16).toFixed(0)+"px;--d:"+(14+Math.random()*14).toFixed(1)+"s;--dl:-"+(Math.random()*24).toFixed(1)+"s";
+    f.append(h);
+  }
+  document.body.prepend(f);
+})();
+render();
+load();
+</script>
+</body>
+</html>
